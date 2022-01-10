@@ -1,12 +1,14 @@
 // load .env data into process.env
 require("dotenv").config();
 
-// Web server config
-const PORT = process.env.PORT || 3000;
-const sassMiddleware = require("./lib/sass-middleware");
-const express = require("express");
-const app = express();
-const morgan = require("morgan");
+// Constants
+const {
+  PORT,
+  sassMiddleware,
+  express,
+  app,
+  morgan
+} = require('./constants');
 
 // PG database client/connection setup
 const { Pool } = require("pg");
