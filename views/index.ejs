@@ -11,10 +11,43 @@
 
   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
   <script type="text/javascript" src="/scripts/app.js"></script>
+
+  <style type="text/css">
+    /* Set the size of the div element that contains the map */
+    #map {
+      height: 400px;
+      /* The height is 400 pixels */
+      width: 100%;
+      /* The width is the width of the web page */
+    }
+  </style>
+  <script>
+    // Initialize and add the map
+    function initMap() {
+      // The location of Ottawa
+      const ottawa = { lat: 45.424721, lng: -75.695000 };
+      // The map, centered at Ottawa
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 4,
+        center: ottawa,
+      });
+      // The marker, positioned at Ottawa
+      const marker = new google.maps.Marker({
+        position: ottawa,
+        map: map,
+      });
+    }
+  </script>
 </head>
 
 <body>
-  <h1>Have fun! 🥔</h1>
+  <!--The div element for the map -->
+  <div id="map"></div>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9gDWdzjWJYNVEY7Suc0jHh9-aZ4F8JK4&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
 </body>
 
 </html>
