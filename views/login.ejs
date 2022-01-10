@@ -21,7 +21,22 @@
 
 <body>
   <%- include('partials/_header') %>
-  <h2>Log in</h2>
+  <main>
+    <h3>Log-in to account</h3>
+    <form class="form" action="/login" method="POST">
+      <div class="form-group">
+        <label for="longURL">Email address:</label>
+        <input class="form-control" type="email" name="email" placeholder="user@email.com" style="width: 300px;">
+      </div>
+      <div class="form-group">
+        <label for="longURL">Password:</label>
+        <input class="form-control" type="password" name="password" style="width: 300px;">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-outline-primary">Submit</button>
+      </div>
+    </form>
+  </main>
 </body>
 
 </html>
