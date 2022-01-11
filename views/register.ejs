@@ -22,21 +22,26 @@
 <body>
   <%- include('partials/_header') %>
   <main>
-    <h3>Register a new account</h3>
-    <form class="form" action="/register" method="POST">
-
-      <div class="form-group">
-        <label for="longURL">Email address:</label>
-        <input class="form-control" type="email" name="email" placeholder="user@email.com" style="width: 300px;">
+      <div class="card" style="width: 35%; margin: auto;">
+        <div class="card-header">
+          <h3>Register a new account</h3>
       </div>
-      <div class="form-group">
-        <label for="longURL">Password:</label>
-        <input class="form-control" type="password" name="password" style="width: 300px;">
+      <div class="card-body">
+        <form class="form" action="/register" method="POST">
+          <div class="form-group">
+            <label for="longURL">Email address:</label>
+            <input class="form-control" type="email" name="email" placeholder="user@email.com" style="width: 300px;">
+          </div>
+          <div class="form-group">
+            <label for="longURL">Password:</label>
+            <input class="form-control" type="password" name="password" style="width: 300px;">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary">Submit</button>
+          </div>
+        </form>
       </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-outline-primary">Submit</button>
-      </div>
-    </form>
+    </div>
   </main>
 </body>
 
