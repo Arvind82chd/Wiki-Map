@@ -116,6 +116,30 @@ app.post('/register', (req, res) => {
   });
 });
 
+// receive info from login form
+app.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const user = findUserByEmail(email, users);
+
+  bcrypt.compare(password, user.password, (err, response) => {
+    // res == true or res == false
+    if (response) {
+      req.session.user_id = user.id;
+      res.redirect('/');
+      return;
+    }
+    res.status(401).send('wrong credentials!');
+  });
+
+});
+
+// handle logout
+app.post('/logout', (req, res) => {
+  req.session = null;
+  res.redirect('/');
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
