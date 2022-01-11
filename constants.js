@@ -3,11 +3,35 @@ const sassMiddleware = require("./lib/sass-middleware");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const cookieSession = require('cookie-session');
+const bcrypt = require('bcryptjs');
+const {
+  findUserByEmail,
+  generateRandomString
+} = require('./helpers');
+
+const users = {
+  "99ohwc99": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+  "55widc55": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+};
 
 module.exports = {
   PORT,
   sassMiddleware,
   express,
   app,
-  morgan
+  morgan,
+  cookieSession,
+  bcrypt,
+  findUserByEmail,
+  generateRandomString,
+  users
 };

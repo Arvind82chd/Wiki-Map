@@ -2,9 +2,18 @@
   <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
     <a class="navbar-brand" href="/">Wiki<b>Map</b></a>
 
+    <% if ( user ) { %>
+    <div class="navbar-nav ml-auto">
+      <h6 class="text-light my-2 ml-2"><%= user.email %></h6>
+      <form class="form-inline" action="/logout" method="POST">
+        <button type="submit" class="btn btn-outline-light my-2 my-sm-0" style="margin:0.75em">Sign Out</button>
+      </form>
+    </div>
+    <% } else { %>
     <div class="navbar-nav ml-auto">
       <a href="/login"><button class="btn btn-outline-light my-2">Log in</button></a>
       <a href="/register"><button class="btn btn-outline-light my-2 ml-2">Register</button></a>
     </div>
+    <% } %>
   </nav>
 </header>
