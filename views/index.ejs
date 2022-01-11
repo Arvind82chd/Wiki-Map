@@ -22,7 +22,30 @@
 <body>
   <%- include('partials/_header') %>
   <!--The div element for the map -->
-  <div id="map"></div>
+  <div class="index">
+    <div id="map"></div>
+    <div class="maps">
+      <ul class="list-group">
+        <h3>All Maps</h3>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Restaurants
+          <span class="badge badge-primary badge-pill">14</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+         Parks
+          <span class="badge badge-primary badge-pill">2</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Entertainment
+          <span class="badge badge-primary badge-pill">1</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+         View all
+          <span class="badge badge-primary badge-pill">18</span>
+        </li>
+      </ul>
+    </div>
+</div>
   <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9gDWdzjWJYNVEY7Suc0jHh9-aZ4F8JK4&callback=initMap&libraries=&v=weekly"
