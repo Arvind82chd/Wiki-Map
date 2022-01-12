@@ -10,9 +10,11 @@ const {
   morgan,
   cookieSession,
   bcrypt,
-  users,
+  bodyParser,
+  userRoutes,
   findUserByEmail,
-  generateRandomString
+  generateRandomString,
+  users
 } = require('./constants');
 
 // PG database client/connection setup
@@ -70,75 +72,10 @@ app.get("/", (req, res) => {
   res.render("index", templateVars);
 });
 
-app.get("/login", (req, res) => {
-  const userId = req.session.user_id;
-  const templateVars = {
-    user: users[userId]
-  };
-  res.render("login", templateVars);
-});
-
-app.get("/register", (req, res) => {
-  const userId = req.session.user_id;
-  const templateVars = {
-    user: users[userId]
-  };
-  res.render("register", templateVars);
-});
-
-// receive info from register form
-app.post('/register', (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-
-  // show error message if email or password is blank
-  if (!email || !password) {
-    res.status(401).send('email and password cannot be blank');
-    return;
-  }
-
-  const user = findUserByEmail(email, users);
-  let userId = Math.random().toString(36).substr(2, 8);
-  if (user) {
-    res.status(403).send('User already exists!');
-    return;
-  }
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(password, salt, (err, hash) => {
-      users[userId] = {
-        id: userId,
-        email: email,
-        password: hash
-      };
-      req.session.user_id = userId;
-      res.redirect('/');
-    });
-  });
-});
-
-// receive info from login form
-app.post('/login', (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  const user = findUserByEmail(email, users);
-
-  bcrypt.compare(password, user.password, (err, response) => {
-    // res == true or res == false
-    if (response) {
-      req.session.user_id = user.id;
-      res.redirect('/');
-      return;
-    }
-    res.status(401).send('wrong credentials!');
-  });
-
-});
-
-// handle logout
-app.post('/logout', (req, res) => {
-  req.session = null;
-  res.redirect('/');
-});
+// /user/endpoints
+// const userRouter = express.Router();
+// userRoutes(userRouter, database);
+// app.use('/users', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
