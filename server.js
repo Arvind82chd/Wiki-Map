@@ -55,12 +55,16 @@ app.use(cookieSession({
 const usersRoutes = require("./routes/users");
 const loginRoutes = require('./routes/login');
 const registerRoutes = require('./routes/register');
+const mapsAddRoutes = require('./routes/maps_add');
+const mapsEditRoutes = require('./routes/maps_edit');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
 app.use("/api/login", loginRoutes(db));
 app.use("/api/register", registerRoutes(db));
+app.use("/api/maps_add", mapsAddRoutes(db));
+app.use("/api/maps_edit", mapsEditRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 // Home page
