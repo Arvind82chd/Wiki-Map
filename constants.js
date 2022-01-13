@@ -5,6 +5,9 @@ const app = express();
 const morgan = require("morgan");
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
+const bodyParser = require('body-parser');
+const userRoutes = require('./userRoutes');
+const database = require('./lib/db')
 const {
   findUserByEmail,
   generateRandomString
@@ -31,6 +34,9 @@ module.exports = {
   morgan,
   cookieSession,
   bcrypt,
+  bodyParser,
+  userRoutes,
+  database,
   findUserByEmail,
   generateRandomString,
   users

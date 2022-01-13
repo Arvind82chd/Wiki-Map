@@ -10,9 +10,12 @@ const {
   morgan,
   cookieSession,
   bcrypt,
-  users,
+  bodyParser,
+  userRoutes,
+  database,
   findUserByEmail,
-  generateRandomString
+  generateRandomString,
+  users
 } = require('./constants');
 
 // PG database client/connection setup
@@ -70,6 +73,7 @@ app.get("/", (req, res) => {
   res.render("index", templateVars);
 });
 
+// render login
 app.get("/login", (req, res) => {
   const userId = req.session.user_id;
   const templateVars = {
@@ -78,6 +82,7 @@ app.get("/login", (req, res) => {
   res.render("login", templateVars);
 });
 
+// render register
 app.get("/register", (req, res) => {
   const userId = req.session.user_id;
   const templateVars = {
@@ -139,6 +144,11 @@ app.post('/logout', (req, res) => {
   req.session = null;
   res.redirect('/');
 });
+
+// /user/endpoints
+const userRouter = express.Router();
+userRoutes(userRouter, database);
+app.use('/users', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

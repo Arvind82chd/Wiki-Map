@@ -1,5 +1,3 @@
--- Drop and recreate Users table (Example)
-
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS map CASCADE;
 DROP TABLE IF EXISTS favorite_maps CASCADE;
