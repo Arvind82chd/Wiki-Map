@@ -54,11 +54,13 @@ app.use(cookieSession({
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
 const widgetsRoutes = require("./routes/widgets");
+const loginRoutes = require('./routes/login');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
 app.use("/api/widgets", widgetsRoutes(db));
+app.use("/api/login", loginRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 // Home page
@@ -73,14 +75,15 @@ app.get("/", (req, res) => {
   res.render("index", templateVars);
 });
 
+
 // render login
-app.get("/login", (req, res) => {
-  const userId = req.session.user_id;
-  const templateVars = {
-    user: users[userId]
-  };
-  res.render("login", templateVars);
-});
+// app.get("/login", (req, res) => {
+//   const userId = req.session.user_id;
+//   const templateVars = {
+//     user: users[userId]
+//   };
+//   res.render("login", templateVars);
+// });
 
 // render register
 app.get("/register", (req, res) => {
@@ -144,11 +147,6 @@ app.post('/logout', (req, res) => {
   req.session = null;
   res.redirect('/');
 });
-
-// /user/endpoints
-const userRouter = express.Router();
-userRoutes(userRouter, database);
-app.use('/users', userRouter);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
