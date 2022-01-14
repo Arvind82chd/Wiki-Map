@@ -26,7 +26,6 @@ module.exports = (db) => {
   });
 
 
-
   // get credentials from user input
   // locate user from db
   // compare password from db and user input with bcrypt
