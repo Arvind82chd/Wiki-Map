@@ -26,6 +26,14 @@ const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
 
+const pool = new Pool({
+  user: 'labber',
+  password: 'labber',
+  host: 'localhost',
+  database: 'midterm',
+  port: '5432'
+});
+
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -60,7 +68,7 @@ const usersRoutes = require("./routes/users");
 const loginRoutes = require('./routes/login');
 const registerRoutes = require('./routes/register');
 const mapsAddRoutes = require('./routes/maps_add');
-const mapsEditRoutes = require('./routes/maps_edit');
+const mapsViewRoutes = require('./routes/maps_view');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -68,15 +76,36 @@ app.use("/api/users", usersRoutes(db));
 app.use("/api/login", loginRoutes(db));
 app.use("/api/register", registerRoutes(db));
 app.use("/api/maps_add", mapsAddRoutes(db));
-app.use("/api/maps_edit", mapsEditRoutes(db));
+app.use("/api/maps_view", mapsViewRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
-app.get("/", (req, res) => {
-  res.render("index", {user: req.session.email});
+const getMaps = () => {
+  const queryString = `SELECT title FROM map;`;
+  return pool
+    .query(queryString)
+    .then(res => res.rows)
+    .catch(e => console.error(e.stack))
+}
+
+// const deleteMap = function () {
+//   const queryString = `DELETE FROM map WHERE title = $1;`;
+//   const values = [title];
+
+//   return pool
+//   .query(queryString, values)
+//   .then(res => res.rows[0])
+//   .catch(e => console.error(e.stack))
+// }
+
+app.get("/", async (req, res) => {
+  res.render("index", {
+    user: req.session.email,
+    maps: await getMaps()
+  });
 });
 
 // handle logout

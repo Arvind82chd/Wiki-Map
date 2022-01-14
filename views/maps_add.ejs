@@ -25,12 +25,12 @@
         <form class="form" action="/api/maps_add" method="POST">
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" aria-describedby="titleHelp"
+            <input type="text" name="title" class="form-control" id="title" aria-describedby="titleHelp"
               placeholder="Enter map title">
           </div>
           <% if (locals.error) { %>
             <div class="alert alert-danger" role="alert">
-              User already exists
+              Map already exists
             </div>
             <% } %>
           <button type="submit" class="btn btn-primary">Submit</button>
