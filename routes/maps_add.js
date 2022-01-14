@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { Pool } = require('pg');
-const pool = new Pool ({
+const {
+  Pool
+} = require('pg');
+const pool = new Pool({
   user: 'labber',
   password: 'labber',
   host: 'localhost',
@@ -13,9 +15,9 @@ const getIdFromEmail = email => {
   const values = [email];
 
   return pool
-  .query(queryString, values)
-  .then(res => res.rows[0].id)
-  .catch(e => console.error(e.stack))
+    .query(queryString, values)
+    .then(res => res.rows[0])
+    .catch(e => console.error(e.stack))
 }
 
 module.exports = (db) => {
@@ -34,7 +36,7 @@ module.exports = (db) => {
     const body = req.body;
     console.log('body:', body);
 
-    // check db if email exists
+    // check db if map exists
     // if exists throw error
     // if email doesn't exist hash password and insert email and password into database
     // create session (cookie)
@@ -44,22 +46,34 @@ module.exports = (db) => {
       .then(async data => {
         console.log('data.rows:', data.rows)
 
-        if (data.rows.length > 0) {
+        if (data.rows.length !== 0) {
           console.log('map exists')
           res.render("maps_add", {
             error: 'this map already exists',
             user: null
           })
+        } else {
+          let users = await getIdFromEmail(req.session.email)
+          db.query(`INSERT INTO map (
+            title, user_id, latitude, longitude)
+            VALUES ($1, $2, 123, 123) RETURNING *;`, [body.title, users.id])
+            .then(
+              data => {
+                console.log(data.rows)
+                data.rows[0];
+                res.render("index", {
+                  user: req.session.email
+                });
+              }
+            )
+            .catch(error => {
+              console.log(error)
+            })
         }
-        db.query(`INSERT INTO map (
-               title, user_id)
-               VALUES ($1, $2) RETURNING *;`, [body.title, getIdFromEmail(req.session.email)])
-          .then(
-            data => {
-              data.rows[0];
-              res.render("index", {user: req.session.email});
-            }
-          )
+
+      })
+      .catch(error => {
+        console.log(error)
       })
   });
 

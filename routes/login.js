@@ -20,7 +20,7 @@ module.exports = (db) => {
     console.log(body)
     db.query(`SELECT * FROM users WHERE email = $1;`, [body.email])
       .then(
-        async data => {
+        data => {
           console.log('data:', data.rows)
           if (data.rows[0]) {
             bcrypt.compare(password, data.rows[0].password, (err, response) => {
