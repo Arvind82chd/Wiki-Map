@@ -26,6 +26,14 @@ const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
 
+const pool = new Pool({
+  user: 'labber',
+  password: 'labber',
+  host: 'localhost',
+  database: 'midterm',
+  port: '5432'
+});
+
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -75,8 +83,20 @@ app.use("/api/maps_edit", mapsEditRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
-app.get("/", (req, res) => {
-  res.render("index", {user: req.session.email});
+const getMaps = () => {
+  const queryString = `SELECT title FROM map;`;
+  return pool
+    .query(queryString)
+    .then(res => res.rows)
+    .catch(e => console.error(e.stack))
+}
+
+app.get("/", async (req, res) => {
+  let maps = await getMaps()
+  res.render("index", {
+    user: req.session.email,
+    maps: maps
+  });
 });
 
 // handle logout

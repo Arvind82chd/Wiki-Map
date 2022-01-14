@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {
-  Pool
-} = require('pg');
+const { Pool } = require('pg');
 const pool = new Pool({
   user: 'labber',
   password: 'labber',
@@ -10,6 +8,7 @@ const pool = new Pool({
   database: 'midterm',
   port: '5432'
 });
+
 const getIdFromEmail = email => {
   const queryString = `SELECT id FROM users WHERE email = $1;`;
   const values = [email];
@@ -21,10 +20,10 @@ const getIdFromEmail = email => {
 }
 
 const getMaps = () => {
-  const queryString = `SELECT title FROM map`;
+  const queryString = `SELECT title FROM map;`;
   return pool
     .query(queryString)
-    .then(res => res.rows[0])
+    .then(res => res.rows)
     .catch(e => console.error(e.stack))
 }
 
@@ -44,11 +43,6 @@ module.exports = (db) => {
     const body = req.body;
     console.log('body:', body);
 
-    // check db if map exists
-    // if exists throw error
-    // if email doesn't exist hash password and insert email and password into database
-    // create session (cookie)
-
     // redirect to index
     db.query(`SELECT * FROM map WHERE title = $1;`, [body.title])
       .then(async data => {
@@ -62,6 +56,7 @@ module.exports = (db) => {
           })
         } else {
           let users = await getIdFromEmail(req.session.email)
+          let maps = await getMaps()
           db.query(`INSERT INTO map (
             title, user_id, latitude, longitude)
             VALUES ($1, $2, 123, 123) RETURNING *;`, [body.title, users.id])
@@ -71,7 +66,7 @@ module.exports = (db) => {
                 data.rows[0];
                 res.render("index", {
                   user: req.session.email,
-                  maps: getMaps
+                  maps: maps
                 });
               }
             )

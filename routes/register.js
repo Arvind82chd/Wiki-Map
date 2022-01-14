@@ -1,6 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const { Pool } = require('pg');
+const pool = new Pool({
+  user: 'labber',
+  password: 'labber',
+  host: 'localhost',
+  database: 'midterm',
+  port: '5432'
+});
+
+const getMaps = () => {
+  const queryString = `SELECT title FROM map;`;
+  return pool
+    .query(queryString)
+    .then(res => res.rows)
+    .catch(e => console.error(e.stack))
+}
+
 module.exports = (db) => {
   router.get("/", (req, res) => {
     res.render("register", {user: req.session.email});
@@ -23,6 +40,7 @@ module.exports = (db) => {
           res.render("register", {error: 'this email already exists', user: null})
         }
         const hashed_pass = await bcrypt.hash(body.password, 12);
+        let maps = await getMaps()
         db.query(`INSERT INTO users (
              email, password, name)
              VALUES (
@@ -31,7 +49,10 @@ module.exports = (db) => {
             data => {
               data.rows[0];
               req.session.email = data.rows[0].email;
-              res.render("index", {user: req.session.email})
+              res.render("index", {
+                user: req.session.email,
+                maps: maps
+              })
             }
           )
       })

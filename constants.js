@@ -7,10 +7,11 @@ const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const userRoutes = require('./userRoutes');
-const database = require('./lib/db')
+const database = require('./lib/db');
 const {
   findUserByEmail,
-  generateRandomString
+  generateRandomString,
+  getMaps
 } = require('./helpers');
 
 const users = {

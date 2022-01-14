@@ -1,14 +1,31 @@
 const express = require('express');
-const {
-  bcrypt
-} = require('../constants');
+const { bcrypt } = require('../constants');
 const router = express.Router();
+const { Pool } = require('pg');
+const pool = new Pool({
+  user: 'labber',
+  password: 'labber',
+  host: 'localhost',
+  database: 'midterm',
+  port: '5432'
+});
+
+const getMaps = () => {
+  const queryString = `SELECT title FROM map;`;
+  return pool
+    .query(queryString)
+    .then(res => res.rows)
+    .catch(e => console.error(e.stack))
+}
+
 module.exports = (db) => {
   router.get("/", (req, res) => {
     res.render("login", {
       user: req.session.email
     });
   });
+
+
 
   // get credentials from user input
   // locate user from db
@@ -19,15 +36,17 @@ module.exports = (db) => {
     const password = req.body.password;
     console.log(body)
     db.query(`SELECT * FROM users WHERE email = $1;`, [body.email])
-      .then(
-        data => {
+      .then(async data => {
           console.log('data:', data.rows)
+          let maps = await getMaps()
           if (data.rows[0]) {
             bcrypt.compare(password, data.rows[0].password, (err, response) => {
               if (response) {
+
                 req.session.email = data.rows[0].email;
                 res.render("index", {
-                  user: req.session.email
+                  user: req.session.email,
+                  maps: maps
                 });
                 return
               }
