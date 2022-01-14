@@ -15,7 +15,7 @@ module.exports = (db) => {
         console.log(data.rows)
         if (data.rows.length > 0) {
           console.log('email exists')
-          res.render("register", {error: 'this email already exists'})
+          res.render("register", {error: 'this email already exists', user: null})
         }
         const hashed_pass = await bcrypt.hash(body.password, 12);
         db.query(`INSERT INTO users (
