@@ -17,24 +17,29 @@ module.exports = (db) => {
   router.post("/", (req, res) => {
     const body = req.body;
     const password = req.body.password;
+    console.log(body)
     db.query(`SELECT * FROM users WHERE email = $1;`, [body.email])
-      .then(data => {
-        if (data.rows[0]) {
-          bcrypt.compare(password, data.rows[0].password, (err, response) => {
-            if (response) {
-              req.session.email = data.rows[0].email;
-              res.render("index", {
-                user: req.session.email
-              });
-              return
-            }
+      .then(
+        async data => {
+          console.log('data:', data.rows)
+          if (data.rows[0]) {
+            bcrypt.compare(password, data.rows[0].password, (err, response) => {
+              if (response) {
+                req.session.email = data.rows[0].email;
+                res.render("index", {
+                  user: req.session.email
+                });
+                return
+              }
+
+            })
+          } else {
             res.render("login", {
               error: 'wrong credentials',
               user: null
             })
-          })
-        }
-      })
+          }
+        })
   })
   return router;
 };
