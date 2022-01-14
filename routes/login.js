@@ -20,10 +20,10 @@ const getMaps = () => {
 
 module.exports = (db) => {
   router.get("/", async (req, res) => {
-    const user_email = req.session.email; //to check user loged in
+    const user = req.session.email; //to check user loged in
     const maps = await getMaps(); //because we want to send maps data to the index.ejs
 
-    const templatevars = {user: user_email, maps: maps}
+    const templatevars = {user: user, maps: maps}
     res.render("login", templatevars);
   });
 
