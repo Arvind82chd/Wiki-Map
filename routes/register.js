@@ -10,6 +10,11 @@ module.exports = (db) => {
     console.log(body);
 
     // check db if email exists
+    // if exists throw error
+    // if email doesn't exist hash password and insert email and password into database
+    // create session (cookie)
+
+    // redirect to index
     db.query(`SELECT * FROM users WHERE email = $1;`, [body.email])
       .then(async data => {
         console.log(data.rows)
@@ -30,40 +35,6 @@ module.exports = (db) => {
             }
           )
       })
-    // if exists throw error
-
-    // if email doesn't exist hash password and insert email and password into database
-
-    // create session (cookie)
-
-    // redirect to index
-
-
-    //   db.query(`INSERT INTO users (
-    //     name, email, password)
-    //     VALUES (
-    //     $1, $2, $3);`, [body.email])
-    //     .then(data => {
-    //       console.log("password", data);
-    //       if (data.rows[0].password === body.password) {
-    //         res.cookie("user_id", data.rows[0].id);
-    //         res.redirect("/api");
-    //       } else {
-    //         res
-    //           .status(401)
-    //           .json({
-    //             error: "incorrect password"
-    //           });
-    //       }
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //       res
-    //         .status(500)
-    //         .json({
-    //           error: err.message
-    //         });
-    //     });
   });
   return router;
 
