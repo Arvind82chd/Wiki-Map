@@ -19,7 +19,9 @@ const {
 } = require('./constants');
 
 // PG database client/connection setup
-const { Pool } = require("pg");
+const {
+  Pool
+} = require("pg");
 const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
@@ -30,7 +32,9 @@ db.connect();
 app.use(morgan("dev"));
 
 app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 
 app.use(
   "/styles",
@@ -72,7 +76,13 @@ app.use("/api/maps_edit", mapsEditRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", {user: req.session.email});
+});
+
+// handle logout
+app.post('/logout', (req, res) => {
+  req.session = null;
+  res.redirect('/');
 });
 
 app.listen(PORT, () => {
