@@ -15,7 +15,7 @@ const getMaps = () => {
   return pool
     .query(queryString)
     .then(res => res.rows)
-    .catch(e => console.error(e.message))
+    .catch(e => console.error(e.stack))
 }
 
 module.exports = (db) => {
