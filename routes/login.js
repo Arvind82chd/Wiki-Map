@@ -15,14 +15,16 @@ const getMaps = () => {
   return pool
     .query(queryString)
     .then(res => res.rows)
-    .catch(e => console.error(e.stack))
+    .catch(e => console.error(e.message))
 }
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    res.render("login", {
-      user: req.session.email
-    });
+    const user_email = req.session.email; //to check user loged in
+    const maps = getMaps(); //because we want to send maps data to the index.ejs
+
+    const templatevars = {user: user_email, maps: maps}
+    res.render("login", templatevars);
   });
 
 
