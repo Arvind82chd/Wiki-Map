@@ -64,6 +64,7 @@ module.exports = (db) => {
               data => {
                 console.log(data.rows)
                 data.rows[0];
+                res.redirect('/');
                 res.render("index", {
                   user: req.session.email,
                   maps: maps

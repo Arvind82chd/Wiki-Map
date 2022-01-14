@@ -68,7 +68,7 @@ const usersRoutes = require("./routes/users");
 const loginRoutes = require('./routes/login');
 const registerRoutes = require('./routes/register');
 const mapsAddRoutes = require('./routes/maps_add');
-const mapsEditRoutes = require('./routes/maps_edit');
+const mapsViewRoutes = require('./routes/maps_view');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -76,7 +76,7 @@ app.use("/api/users", usersRoutes(db));
 app.use("/api/login", loginRoutes(db));
 app.use("/api/register", registerRoutes(db));
 app.use("/api/maps_add", mapsAddRoutes(db));
-app.use("/api/maps_edit", mapsEditRoutes(db));
+app.use("/api/maps_view", mapsViewRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 // Home page
@@ -91,11 +91,20 @@ const getMaps = () => {
     .catch(e => console.error(e.stack))
 }
 
+// const deleteMap = function () {
+//   const queryString = `DELETE FROM map WHERE title = $1;`;
+//   const values = [title];
+
+//   return pool
+//   .query(queryString, values)
+//   .then(res => res.rows[0])
+//   .catch(e => console.error(e.stack))
+// }
+
 app.get("/", async (req, res) => {
-  let maps = await getMaps()
   res.render("index", {
     user: req.session.email,
-    maps: maps
+    maps: await getMaps()
   });
 });
 
