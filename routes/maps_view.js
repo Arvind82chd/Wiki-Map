@@ -18,11 +18,14 @@ const getMaps = () => {
 }
 
 module.exports = (db) => {
-  router.get("/api/maps_view", (req, res) => {
-    res.render("maps_view", {
-      user: req.session.email
-    });
-  });
+  // router.post("/api/maps_view/:title", (req, res) => {
+  //   let title = req.params.title;
+  //   // res.redirect("/maps_view")
+  //   res.render("maps_view", {
+  //     user: req.session.email,
+  //     title: title
+  //   });
+  // });
 
 
   // check db if map exists

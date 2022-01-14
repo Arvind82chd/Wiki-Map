@@ -91,20 +91,39 @@ const getMaps = () => {
     .catch(e => console.error(e.stack))
 }
 
-// const deleteMap = function () {
-//   const queryString = `DELETE FROM map WHERE title = $1;`;
-//   const values = [title];
+const deleteMap = function (title) {
+  const queryString = `DELETE FROM map WHERE title = $1;`;
+  const values = [title];
 
-//   return pool
-//   .query(queryString, values)
-//   .then(res => res.rows[0])
-//   .catch(e => console.error(e.stack))
-// }
+  return pool
+  .query(queryString, values)
+  .then(res => res.rows[0])
+  .catch(e => console.error(e.stack))
+}
 
 app.get("/", async (req, res) => {
   res.render("index", {
     user: req.session.email,
     maps: await getMaps()
+  });
+});
+
+app.post('/delete/:title', async (req, res) => {
+  let title = req.params.title;
+  await deleteMap(title)
+  res.redirect("/");
+  res.render("index", {
+    user: req.session.email,
+    maps: await getMaps()
+  });
+});
+
+app.post("/maps_view/:title", (req, res) => {
+  let title = req.params.title;
+  // res.redirect("/maps_view")
+  res.render("maps_view", {
+    user: req.session.email,
+    title: title
   });
 });
 
