@@ -20,6 +20,14 @@ const getIdFromEmail = email => {
     .catch(e => console.error(e.stack))
 }
 
+const getMaps = () => {
+  const queryString = `SELECT title FROM map`;
+  return pool
+    .query(queryString)
+    .then(res => res.rows[0])
+    .catch(e => console.error(e.stack))
+}
+
 module.exports = (db) => {
   router.get("/", (req, res) => {
     res.render("maps_add", {
@@ -62,7 +70,8 @@ module.exports = (db) => {
                 console.log(data.rows)
                 data.rows[0];
                 res.render("index", {
-                  user: req.session.email
+                  user: req.session.email,
+                  maps: getMaps
                 });
               }
             )
