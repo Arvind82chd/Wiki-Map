@@ -22,9 +22,7 @@ module.exports = (db) => {
   router.get("/", async (req, res) => {
     const user = req.session.email; //to check user loged in
     const maps = await getMaps(); //because we want to send maps data to the index.ejs
-
-    const templatevars = {user: user, maps: maps}
-    res.render("login", templatevars);
+    res.render("login", {user: user, maps: maps});
   });
 
 
@@ -56,7 +54,8 @@ module.exports = (db) => {
           } else {
             res.render("login", {
               error: 'wrong credentials',
-              user: null
+              user: null,
+              maps: null
             })
           }
         })

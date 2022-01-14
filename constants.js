@@ -10,8 +10,7 @@ const userRoutes = require('./userRoutes');
 const database = require('./lib/db');
 const {
   findUserByEmail,
-  generateRandomString,
-  getMaps
+  generateRandomString
 } = require('./helpers');
 
 const users = {
